@@ -156,25 +156,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 10
 
-[node name="fps_demo_button" type="Button" parent="menu/menu_margin/main_menu/button_list_margin/button_list"]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.74558, 0.74558, 0.74558, 1)
-theme_override_fonts/font = ExtResource("4_5uuh1")
-theme_override_font_sizes/font_size = 55
-text = "First Person Demo"
-flat = true
-alignment = 0
-
-[node name="tp_demo_button" type="Button" parent="menu/menu_margin/main_menu/button_list_margin/button_list"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.74558, 0.74558, 0.74558, 1)
-theme_override_fonts/font = ExtResource("4_5uuh1")
-theme_override_font_sizes/font_size = 55
-text = "Third Person Demo "
-flat = true
-alignment = 0
-
 [node name="td_demo_button" type="Button" parent="menu/menu_margin/main_menu/button_list_margin/button_list"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.74558, 0.74558, 0.74558, 1)
@@ -267,8 +248,6 @@ text = "By Lukky "
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[connection signal="pressed" from="menu/menu_margin/main_menu/button_list_margin/button_list/fps_demo_button" to="menu" method="_on_fps_demo_button_pressed"]
-[connection signal="pressed" from="menu/menu_margin/main_menu/button_list_margin/button_list/tp_demo_button" to="menu" method="_on_tp_demo_button_pressed"]
 [connection signal="pressed" from="menu/menu_margin/main_menu/button_list_margin/button_list/td_demo_button" to="menu" method="_on_td_demo_button_pressed"]
 [connection signal="pressed" from="menu/menu_margin/main_menu/button_list_margin/button_list/about_button" to="menu" method="_on_about_button_pressed"]
 [connection signal="pressed" from="menu/menu_margin/about/about_margin/about_menu/back_button" to="menu" method="_on_back_button_pressed"]

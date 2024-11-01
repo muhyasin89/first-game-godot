@@ -1,8 +1,12 @@
 extends CharacterBody3D
 
+@export var inventory_data: InventoryData
+
 @export var joystick_touch_pad:Control
 
 @onready var player_model = $player_model
+
+signal toggle_inventory()
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -29,6 +33,9 @@ func _physics_process(delta):
 	if jump_just_pressed and is_on_floor():
 		jump_just_pressed = false
 		velocity.y = JUMP_VELOCITY
+		
+	if Input.is_action_just_pressed("inventory"):
+		toggle_inventory.emit()
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
