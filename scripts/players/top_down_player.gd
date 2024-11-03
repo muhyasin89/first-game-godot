@@ -66,7 +66,7 @@ func _physics_process(delta):
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
 		is_walking = true
-		$StateChart.set_expression_property("is_walking", is_walking)
+		$StateChart.send_event("walking")
 	else:
 		is_walking = false
 		velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -141,3 +141,8 @@ func _on_attacking_state_entered() -> void:
 	await player.get_node("AnimationPlayer").animation_finished
 	is_attacking = false
 	$StateChart.set_expression_property("is_attacking", is_attacking)
+
+
+func _on_walking_state_exited() -> void:
+	is_walking = false
+	$StateChart.set_expression_property("is_walking", is_walking)
