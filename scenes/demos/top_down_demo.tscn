@@ -1,9 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://curo1kpfi8fsa"]
+[gd_scene load_steps=14 format=3 uid="uid://curo1kpfi8fsa"]
 
 [ext_resource type="Script" path="res://scenes/demos/main.gd" id="1_4hukx"]
-[ext_resource type="Resource" uid="uid://dosxvwlrk4nqo" path="res://scenes/demos/test_inv.tres" id="2_7f8ma"]
-[ext_resource type="Script" path="res://scripts/players/top_down_player.gd" id="2_bu3rj"]
-[ext_resource type="Texture2D" uid="uid://bft8nqp8ycot1" path="res://assets/textures/grids/Orange/texture_05.png" id="3_a8wx8"]
+[ext_resource type="PackedScene" uid="uid://bbwdhkc0iu0dp" path="res://scenes/player.tscn" id="2_romxh"]
 [ext_resource type="PackedScene" uid="uid://bb0dcinj3d5r" path="res://scenes/controller_layouts/joystick_touch_pad.tscn" id="3_glxvy"]
 [ext_resource type="Texture2D" uid="uid://ded2m23ho7b2r" path="res://assets/icons/circle_medium.png" id="5_5m7w2"]
 [ext_resource type="Texture2D" uid="uid://cqft4fr8q6yku" path="res://assets/icons/home.png" id="7_sf7e5"]
@@ -28,13 +26,6 @@ sky = SubResource("Sky_cfiyk")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3h53c"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_1fp28"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2wcb0"]
-albedo_texture = ExtResource("3_a8wx8")
-
 [node name="world" type="Node3D"]
 script = ExtResource("1_4hukx")
 
@@ -49,26 +40,8 @@ shadow_enabled = true
 
 [node name="objects" type="Node" parent="."]
 
-[node name="player" type="CharacterBody3D" parent="objects" node_paths=PackedStringArray("joystick_touch_pad")]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -40, 0, -40)
-script = ExtResource("2_bu3rj")
-inventory_data = ExtResource("2_7f8ma")
+[node name="player" parent="objects" node_paths=PackedStringArray("joystick_touch_pad") instance=ExtResource("2_romxh")]
 joystick_touch_pad = NodePath("../../ui/joystick_touch_pad")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="objects/player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_3h53c")
-
-[node name="camera_point" type="Node3D" parent="objects/player"]
-
-[node name="camera" type="Camera3D" parent="objects/player/camera_point"]
-transform = Transform3D(1, 0, 0, 0, 0.60318, 0.797605, 0, -0.797605, 0.60318, 0, 9.78765, 6.66042)
-fov = 41.0
-
-[node name="player_model" type="MeshInstance3D" parent="objects/player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("CapsuleMesh_1fp28")
-surface_material_override/0 = SubResource("StandardMaterial3D_2wcb0")
 
 [node name="stage" parent="." instance=ExtResource("8_nvesx")]
 
@@ -111,26 +84,49 @@ grow_vertical = 2
 
 [node name="action_a_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
 modulate = Color(1, 1, 1, 0.298039)
-position = Vector2(-378, 140)
-scale = Vector2(0.367187, 0.367187)
+position = Vector2(-245, 234)
+scale = Vector2(0.292969, 0.285156)
 texture_normal = ExtResource("5_5m7w2")
 
 [node name="action_b_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
 modulate = Color(1, 1, 1, 0.298039)
-position = Vector2(-306, -3)
-scale = Vector2(0.367187, 0.367187)
+position = Vector2(-182, 119)
+scale = Vector2(0.273438, 0.273437)
 texture_normal = ExtResource("5_5m7w2")
 
-[node name="action_c_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
+[node name="jumped_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
 modulate = Color(1, 1, 1, 0.298039)
-position = Vector2(-183, -98)
-scale = Vector2(0.367187, 0.367187)
+position = Vector2(-51, 81)
+scale = Vector2(0.273438, 0.292969)
 texture_normal = ExtResource("5_5m7w2")
 
-[node name="jump_button4" type="TouchScreenButton" parent="ui/right_side_buttons"]
+[node name="attack_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
 modulate = Color(1, 1, 1, 0.298039)
-position = Vector2(-176, 101)
+position = Vector2(-121, 180)
 scale = Vector2(0.527344, 0.527344)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="left_side_buttons" type="Control" parent="ui"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="inventory_button" type="TouchScreenButton" parent="ui/left_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(44, 531)
+scale = Vector2(0.350433, 0.350433)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="quest_button" type="TouchScreenButton" parent="ui/left_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(165, 527)
+scale = Vector2(0.355469, 0.355469)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="is_running_button" type="TouchScreenButton" parent="ui/left_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(43, 415)
+scale = Vector2(0.332031, 0.339844)
 texture_normal = ExtResource("5_5m7w2")
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -162,5 +158,6 @@ offset_bottom = 64.0
 
 [connection signal="pressed" from="ui/right_side_buttons/action_a_button" to="objects/player" method="_on_action_a_button_pressed"]
 [connection signal="pressed" from="ui/right_side_buttons/action_b_button" to="objects/player" method="_on_action_b_button_pressed"]
-[connection signal="pressed" from="ui/right_side_buttons/action_c_button" to="objects/player" method="_on_action_c_button_pressed"]
-[connection signal="pressed" from="ui/right_side_buttons/jump_button4" to="objects/player" method="on_jump_button_pressed"]
+[connection signal="pressed" from="ui/right_side_buttons/jumped_button" to="objects/player" method="_on_jumped_pressed"]
+[connection signal="pressed" from="ui/right_side_buttons/attack_button" to="objects/player" method="_on_attack_button_pressed"]
+[connection signal="pressed" from="ui/left_side_buttons/inventory_button" to="objects/player" method="_on_inventory_pressed"]

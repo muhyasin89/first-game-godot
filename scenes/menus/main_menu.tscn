@@ -161,7 +161,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.74558, 0.74558, 0.74558, 1)
 theme_override_fonts/font = ExtResource("4_5uuh1")
 theme_override_font_sizes/font_size = 55
-text = "Top Down Demo"
+text = "New Game"
 flat = true
 alignment = 0
 

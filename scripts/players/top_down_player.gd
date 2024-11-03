@@ -4,7 +4,9 @@ extends CharacterBody3D
 
 @export var joystick_touch_pad:Control
 
-@onready var player_model = $player_model
+@onready var animation_tree= get_node("AnimationTree")
+@onready var playback = animation_tree.get("parameters/playback")
+@onready var knight: Node3D = $Knight
 
 signal toggle_inventory()
 
@@ -12,6 +14,23 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
 const LOOKS_SENS = 2.0
+
+#animation node names
+var idle_node_name:String = "Idle"
+var walk_node_name: String = "Walk"
+var run_node_name:String = "Run"
+var jump_node_full_long:String = "Jump_Full_Long"
+var attack1_node_name:String = "Attack1"
+var death_node_name:String = "Death"
+
+#State Machine Condition
+var is_walking :bool
+var is_attacking:bool
+var is_dying: bool
+var is_running: bool
+var is_running_and_jumping: bool
+var is_walking_and_jumping: bool
+var is_jumping: bool
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -34,15 +53,12 @@ func _physics_process(delta):
 		jump_just_pressed = false
 		velocity.y = JUMP_VELOCITY
 		
-	if Input.is_action_just_pressed("inventory"):
-		toggle_inventory.emit()
-
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = joystick_touch_pad.get_joystick()
 	
 	if input_dir != Vector2.ZERO:
-		player_model.rotation.y = -input_dir.angle()
+		knight.rotation.y = -input_dir.angle()
 		
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
@@ -61,7 +77,7 @@ func on_jump_button_pressed():
 
 func _on_action_a_button_pressed():
 	var new_spell_a = spell_a.instantiate()
-	new_spell_a.rotation.y = player_model.rotation.y - deg_to_rad(45)
+	new_spell_a.rotation.y = knight.rotation.y - deg_to_rad(45)
 	new_spell_a.position = position + Vector3.UP
 	get_parent().add_child(new_spell_a)
 
@@ -71,5 +87,15 @@ func _on_action_b_button_pressed():
 	new_spell_b.position = position
 	get_parent().add_child(new_spell_b)
 
-func _on_action_c_button_pressed():
-	player_model.get_surface_override_material(0).set_albedo(Color(randf_range(0,1),randf_range(0,1),randf_range(0,1)))
+func _on_jumped_pressed():
+	print("click jump")
+	#knight.get_surface_override_material(0).set_albedo(Color(randf_range(0,1),randf_range(0,1),randf_range(0,1)))
+
+
+func _on_attack_button_pressed() -> void:
+	print("is attacking")
+	is_attacking = true # Replace with function body.
+
+
+func _on_inventory_pressed() -> void:
+	toggle_inventory.emit() # Replace with function body.
