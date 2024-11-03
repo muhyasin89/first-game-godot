@@ -7,10 +7,11 @@ extends CharacterBody3D
 @onready var animation_tree= get_node("AnimationTree")
 @onready var playback = animation_tree.get("parameters/playback")
 @onready var knight: Node3D = $Knight
+@onready var player: CharacterBody3D = $"."
 
 signal toggle_inventory()
 
-const SPEED = 5.0
+var SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
 const LOOKS_SENS = 2.0
@@ -20,24 +21,23 @@ var idle_node_name:String = "Idle"
 var walk_node_name: String = "Walk"
 var run_node_name:String = "Run"
 var jump_node_full_long:String = "Jump_Full_Long"
+var jump_idle:String = "Jump_Idle"
+var jump_land:String = "Jump_Land"
 var attack1_node_name:String = "Attack1"
 var death_node_name:String = "Death"
 
 #State Machine Condition
 var is_walking :bool
-var is_attacking:bool
+var is_attacking:bool= false
 var is_dying: bool
-var is_running: bool
-var is_running_and_jumping: bool
-var is_walking_and_jumping: bool
-var is_jumping: bool
+var is_running: bool = false
+var is_jumping: bool = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var movement_input_vector = Vector2.ZERO
 
-var jump_just_pressed = false
 
 var spell_a = preload("res://scenes/demos/top_down_spells/spell_a.tscn")
 var spell_b = preload("res://scenes/demos/top_down_spells/spell_b.tscn")
@@ -49,9 +49,10 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 
 	# Handle jump.
-	if jump_just_pressed and is_on_floor():
-		jump_just_pressed = false
+	if is_jumping and is_on_floor():
+		is_jumping = false
 		velocity.y = JUMP_VELOCITY
+		$StateChart.set_expression_property("is_jumping", is_jumping)
 		
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -64,15 +65,15 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		is_walking = true
+		$StateChart.set_expression_property("is_walking", is_walking)
 	else:
+		is_walking = false
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+		
+	
 	move_and_slide()
-
-
-func on_jump_button_pressed():
-	jump_just_pressed = true
 
 
 func _on_action_a_button_pressed():
@@ -88,14 +89,55 @@ func _on_action_b_button_pressed():
 	get_parent().add_child(new_spell_b)
 
 func _on_jumped_pressed():
-	print("click jump")
+	is_jumping = true
+	$StateChart.set_expression_property("is_jumping", is_jumping)
 	#knight.get_surface_override_material(0).set_albedo(Color(randf_range(0,1),randf_range(0,1),randf_range(0,1)))
 
 
-func _on_attack_button_pressed() -> void:
-	print("is attacking")
+func _on_attack_button_pressed() -> void: 
 	is_attacking = true # Replace with function body.
+	$StateChart.set_expression_property("is_attacking", is_attacking)
 
 
 func _on_inventory_pressed() -> void:
 	toggle_inventory.emit() # Replace with function body.
+
+
+func _on_is_running_button_pressed() -> void:
+	is_running = !is_running
+	if is_running:
+		SPEED = 10.0
+	else:
+		SPEED = 5.0
+	$StateChart.set_expression_property("is_running", is_running)
+
+
+func _on_idle_state_entered() -> void:
+	playback.travel(idle_node_name)
+
+
+func _on_walking_state_entered() -> void:
+	playback.travel(walk_node_name)
+
+func _on_running_state_entered() -> void:
+	playback.travel(run_node_name) 
+
+
+func _on_jump_state_entered() -> void:
+	$StateChart.set_expression_property("is_running", is_running)
+	$StateChart.set_expression_property("is_walking", is_walking)
+	
+	if !is_running && !is_walking:
+		playback.travel(jump_idle)
+	elif is_walking:
+		playback.travel(jump_land)
+	elif is_running:
+		playback.travel(jump_node_full_long)
+		
+
+
+func _on_attacking_state_entered() -> void:
+	playback.travel(attack1_node_name)
+	await player.get_node("AnimationPlayer").animation_finished
+	is_attacking = false
+	$StateChart.set_expression_property("is_attacking", is_attacking)

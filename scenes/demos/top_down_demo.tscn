@@ -161,3 +161,4 @@ offset_bottom = 64.0
 [connection signal="pressed" from="ui/right_side_buttons/jumped_button" to="objects/player" method="_on_jumped_pressed"]
 [connection signal="pressed" from="ui/right_side_buttons/attack_button" to="objects/player" method="_on_attack_button_pressed"]
 [connection signal="pressed" from="ui/left_side_buttons/inventory_button" to="objects/player" method="_on_inventory_pressed"]
+[connection signal="pressed" from="ui/left_side_buttons/is_running_button" to="objects/player" method="_on_is_running_button_pressed"]
