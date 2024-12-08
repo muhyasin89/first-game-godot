@@ -1,0 +1,183 @@
+[gd_scene load_steps=17 format=3 uid="uid://curo1kpfi8fsa"]
+
+[ext_resource type="Script" path="res://scenes/demos/main.gd" id="1_4hukx"]
+[ext_resource type="PackedScene" uid="uid://bbwdhkc0iu0dp" path="res://scenes/player.tscn" id="2_romxh"]
+[ext_resource type="ArrayMesh" uid="uid://bykc4wisp812p" path="res://assets/items/vendingMachine/vending.obj" id="3_givj1"]
+[ext_resource type="PackedScene" uid="uid://bb0dcinj3d5r" path="res://scenes/controller_layouts/joystick_touch_pad.tscn" id="3_glxvy"]
+[ext_resource type="Texture2D" uid="uid://ded2m23ho7b2r" path="res://assets/icons/circle_medium.png" id="5_5m7w2"]
+[ext_resource type="Texture2D" uid="uid://cqft4fr8q6yku" path="res://assets/icons/home.png" id="7_sf7e5"]
+[ext_resource type="Script" path="res://scripts/menu/home_button.gd" id="8_cmidx"]
+[ext_resource type="PackedScene" uid="uid://b8mxteosajyn7" path="res://scenes/demos/demo_stage.tscn" id="8_nvesx"]
+[ext_resource type="PackedScene" uid="uid://b5d8bsve2818o" path="res://scenes/demos/inventory.tscn" id="10_fpv4y"]
+[ext_resource type="Script" path="res://scripts/inventory/inventory_interface.gd" id="10_m1sll"]
+[ext_resource type="Script" path="res://scripts/item/pickup.gd" id="11_2gogb"]
+[ext_resource type="PackedScene" uid="uid://csielcyxlcq3l" path="res://scripts/inventory/slot.tscn" id="12_kueft"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vuemu"]
+sky_top_color = Color(0.361584, 0.562306, 0.817912, 1)
+sky_horizon_color = Color(0.255549, 0.565391, 0.815539, 1)
+ground_bottom_color = Color(0.128949, 0.368382, 0.554731, 1)
+ground_horizon_color = Color(0.255549, 0.565391, 0.815539, 1)
+
+[sub_resource type="Sky" id="Sky_cfiyk"]
+sky_material = SubResource("ProceduralSkyMaterial_vuemu")
+
+[sub_resource type="Environment" id="Environment_4ryma"]
+background_mode = 2
+sky = SubResource("Sky_cfiyk")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q15y5"]
+
+[node name="world" type="Node3D"]
+script = ExtResource("1_4hukx")
+
+[node name="env" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_4ryma")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(1, 2.77162e-06, -2.45869e-06, 1.47562e-08, 0.499998, 0.866027, 3.8147e-06, -0.866026, 0.499999, 0, 0, 0)
+shadow_enabled = true
+
+[node name="objects" type="Node" parent="."]
+
+[node name="player" parent="objects" node_paths=PackedStringArray("joystick_touch_pad") instance=ExtResource("2_romxh")]
+joystick_touch_pad = NodePath("../../ui/joystick_touch_pad")
+
+[node name="Vending" type="MeshInstance3D" parent="objects"]
+transform = Transform3D(-0.051325, 0, 0.998682, 0, 1, 0, -0.998682, 0, -0.051325, -37.4818, 0.620158, -48.2606)
+mesh = ExtResource("3_givj1")
+
+[node name="stage" parent="." instance=ExtResource("8_nvesx")]
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="joystick_touch_pad" parent="ui" instance=ExtResource("3_glxvy")]
+layout_mode = 1
+
+[node name="home_button" type="TextureButton" parent="ui"]
+modulate = Color(1, 1, 1, 0.454902)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_right = 32.0
+offset_bottom = 64.0
+grow_horizontal = 2
+texture_normal = ExtResource("7_sf7e5")
+script = ExtResource("8_cmidx")
+
+[node name="right_side_buttons" type="Control" parent="ui"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="action_a_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(-245, 234)
+scale = Vector2(0.292969, 0.285156)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="action_b_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(-182, 119)
+scale = Vector2(0.273438, 0.273437)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="jumped_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(-51, 81)
+scale = Vector2(0.273438, 0.292969)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="attack_button" type="TouchScreenButton" parent="ui/right_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(-121, 180)
+scale = Vector2(0.527344, 0.527344)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="left_side_buttons" type="Control" parent="ui"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="inventory_button" type="TouchScreenButton" parent="ui/left_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(44, 531)
+scale = Vector2(0.350433, 0.350433)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="quest_button" type="TouchScreenButton" parent="ui/left_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(165, 527)
+scale = Vector2(0.355469, 0.355469)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="is_running_button" type="TouchScreenButton" parent="ui/left_side_buttons"]
+modulate = Color(1, 1, 1, 0.298039)
+position = Vector2(43, 415)
+scale = Vector2(0.332031, 0.339844)
+texture_normal = ExtResource("5_5m7w2")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="InventoryInterface" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_m1sll")
+
+[node name="PlayerInventory" parent="UI/InventoryInterface" instance=ExtResource("10_fpv4y")]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="GrabbedSlot" parent="UI/InventoryInterface" instance=ExtResource("12_kueft")]
+visible = false
+modulate = Color(1, 1, 1, 0.470588)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.0934, -1.90735e-06, -36.8185)
+script = ExtResource("11_2gogb")
+item_id = "pickaxe"
+
+[node name="Area3D" type="Area3D" parent="Node3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297474, 1.19883, -0.325665)
+shape = SubResource("CapsuleShape3D_q15y5")
+
+[connection signal="pressed" from="ui/right_side_buttons/action_a_button" to="objects/player" method="_on_action_a_button_pressed"]
+[connection signal="pressed" from="ui/right_side_buttons/action_b_button" to="objects/player" method="_on_action_b_button_pressed"]
+[connection signal="pressed" from="ui/right_side_buttons/jumped_button" to="objects/player" method="_on_jumped_pressed"]
+[connection signal="pressed" from="ui/right_side_buttons/attack_button" to="objects/player" method="_on_attack_button_pressed"]
+[connection signal="pressed" from="ui/left_side_buttons/inventory_button" to="objects/player" method="_on_inventory_pressed"]
+[connection signal="body_entered" from="Node3D/Area3D" to="Node3D" method="_on_area_3d_body_entered"]

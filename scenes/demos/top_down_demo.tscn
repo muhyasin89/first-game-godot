@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://curo1kpfi8fsa"]
+[gd_scene load_steps=17 format=3 uid="uid://curo1kpfi8fsa"]
 
 [ext_resource type="Script" path="res://scenes/demos/main.gd" id="1_4hukx"]
 [ext_resource type="PackedScene" uid="uid://bbwdhkc0iu0dp" path="res://scenes/player.tscn" id="2_romxh"]
+[ext_resource type="ArrayMesh" uid="uid://bykc4wisp812p" path="res://assets/items/vendingMachine/vending.obj" id="3_givj1"]
 [ext_resource type="PackedScene" uid="uid://bb0dcinj3d5r" path="res://scenes/controller_layouts/joystick_touch_pad.tscn" id="3_glxvy"]
 [ext_resource type="Texture2D" uid="uid://ded2m23ho7b2r" path="res://assets/icons/circle_medium.png" id="5_5m7w2"]
 [ext_resource type="Texture2D" uid="uid://cqft4fr8q6yku" path="res://assets/icons/home.png" id="7_sf7e5"]
@@ -9,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://b8mxteosajyn7" path="res://scenes/demos/demo_stage.tscn" id="8_nvesx"]
 [ext_resource type="PackedScene" uid="uid://b5d8bsve2818o" path="res://scenes/demos/inventory.tscn" id="10_fpv4y"]
 [ext_resource type="Script" path="res://scripts/inventory/inventory_interface.gd" id="10_m1sll"]
+[ext_resource type="Script" path="res://scripts/item/pickup.gd" id="11_2gogb"]
 [ext_resource type="PackedScene" uid="uid://csielcyxlcq3l" path="res://scripts/inventory/slot.tscn" id="12_kueft"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vuemu"]
@@ -26,6 +28,8 @@ sky = SubResource("Sky_cfiyk")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q15y5"]
+
 [node name="world" type="Node3D"]
 script = ExtResource("1_4hukx")
 
@@ -42,6 +46,10 @@ shadow_enabled = true
 
 [node name="player" parent="objects" node_paths=PackedStringArray("joystick_touch_pad") instance=ExtResource("2_romxh")]
 joystick_touch_pad = NodePath("../../ui/joystick_touch_pad")
+
+[node name="Vending" type="MeshInstance3D" parent="objects"]
+transform = Transform3D(-0.051325, 0, 0.998682, 0, 1, 0, -0.998682, 0, -0.051325, -37.4818, 0.620158, -48.2606)
+mesh = ExtResource("3_givj1")
 
 [node name="stage" parent="." instance=ExtResource("8_nvesx")]
 
@@ -156,8 +164,20 @@ layout_mode = 0
 offset_right = 64.0
 offset_bottom = 64.0
 
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.0934, -1.90735e-06, -36.8185)
+script = ExtResource("11_2gogb")
+item_id = "pickaxe"
+
+[node name="Area3D" type="Area3D" parent="Node3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297474, 1.19883, -0.325665)
+shape = SubResource("CapsuleShape3D_q15y5")
+
 [connection signal="pressed" from="ui/right_side_buttons/action_a_button" to="objects/player" method="_on_action_a_button_pressed"]
 [connection signal="pressed" from="ui/right_side_buttons/action_b_button" to="objects/player" method="_on_action_b_button_pressed"]
 [connection signal="pressed" from="ui/right_side_buttons/jumped_button" to="objects/player" method="_on_jumped_pressed"]
 [connection signal="pressed" from="ui/right_side_buttons/attack_button" to="objects/player" method="_on_attack_button_pressed"]
 [connection signal="pressed" from="ui/left_side_buttons/inventory_button" to="objects/player" method="_on_inventory_pressed"]
+[connection signal="body_entered" from="Node3D/Area3D" to="Node3D" method="_on_area_3d_body_entered"]

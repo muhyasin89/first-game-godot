@@ -145,7 +145,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_5uuh1")
 theme_override_font_sizes/font_size = 100
-text = "Pocket Godot"
+text = "Goblin Delivery"
 
 [node name="button_list_margin" type="MarginContainer" parent="menu/menu_margin/main_menu"]
 layout_mode = 2

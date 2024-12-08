@@ -4,7 +4,8 @@ extends CharacterBody3D
 
 @export var joystick_touch_pad:Control
 
-@onready var animation_tree= get_node("AnimationTree")
+@onready var interact_ray: RayCast3D = $InteractRay
+@onready var animation_tree = get_node("AnimationTree")
 @onready var playback = animation_tree.get("parameters/playback")
 @onready var knight: Node3D = $Knight
 
@@ -17,20 +18,15 @@ const LOOKS_SENS = 2.0
 
 #animation node names
 var idle_node_name:String = "Idle"
-var walk_node_name: String = "Walk"
+var walk_node_name: String = "Walking"
 var run_node_name:String = "Run"
 var jump_node_full_long:String = "Jump_Full_Long"
 var attack1_node_name:String = "Attack1"
 var death_node_name:String = "Death"
 
-#State Machine Condition
-var is_walking :bool
-var is_attacking:bool
-var is_dying: bool
-var is_running: bool
-var is_running_and_jumping: bool
-var is_walking_and_jumping: bool
-var is_jumping: bool
+
+var isMoving: bool = false
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -53,6 +49,10 @@ func _physics_process(delta):
 		jump_just_pressed = false
 		velocity.y = JUMP_VELOCITY
 		
+	# Handle collision
+	if interact_ray.is_colliding():
+		print("interact with ", interact_ray.get_collider())
+		
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = joystick_touch_pad.get_joystick()
@@ -64,11 +64,26 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		IsMoving()
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+		IsIdle()
+	
 	move_and_slide()
+	
+func IsMoving():
+	isMoving = true
+	$PlayerState.send_event("player_moving")
+	playback.travel(walk_node_name)
+
+func IsIdle():
+	isMoving = false
+	playback.travel(idle_node_name)
+	$PlayerState.send_event("player_idle")
+	
+func on_item_picked_up(item_id: String):
+	print("I got a ", Items.Database[item_id].name)
 
 
 func on_jump_button_pressed():
@@ -94,7 +109,7 @@ func _on_jumped_pressed():
 
 func _on_attack_button_pressed() -> void:
 	print("is attacking")
-	is_attacking = true # Replace with function body.
+	# Replace with function body.
 
 
 func _on_inventory_pressed() -> void:
