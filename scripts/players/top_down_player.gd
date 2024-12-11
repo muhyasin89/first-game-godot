@@ -4,7 +4,6 @@ extends CharacterBody3D
 
 @export var joystick_touch_pad:Control
 
-@onready var interact_ray: RayCast3D = $InteractRay
 @onready var animation_tree = get_node("AnimationTree")
 @onready var playback = animation_tree.get("parameters/playback")
 @onready var knight: Node3D = $Knight
@@ -50,8 +49,8 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 		
 	# Handle collision
-	if interact_ray.is_colliding():
-		print("interact with ", interact_ray.get_collider())
+	#if interact_ray.is_colliding():
+		#print("interact with ", interact_ray.get_collider())
 		
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -84,6 +83,9 @@ func IsIdle():
 	
 func on_item_picked_up(item_id: String):
 	print("I got a ", Items.Database[item_id].name)
+	
+func on_chest_interact(chest_id: String):
+	print("On Item chest")
 
 
 func on_jump_button_pressed():
@@ -114,3 +116,7 @@ func _on_attack_button_pressed() -> void:
 
 func _on_inventory_pressed() -> void:
 	toggle_inventory.emit() # Replace with function body.
+
+
+func _on_interactable_pressed() -> void:
+	pass # Replace with function body.
