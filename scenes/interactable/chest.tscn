@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c78av7tlbyhxm"]
+[gd_scene load_steps=7 format=3 uid="uid://c78av7tlbyhxm"]
 
 [ext_resource type="Script" path="res://scenes/interactable/chest.gd" id="1_uxc6j"]
+[ext_resource type="PackedScene" uid="uid://dbrr32k84upxm" path="res://system/Interaction/interactable.tscn" id="2_oa08g"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ag4t"]
 albedo_color = Color(0.276896, 0.275834, 0, 1)
@@ -9,6 +10,9 @@ albedo_color = Color(0.276896, 0.275834, 0, 1)
 material = SubResource("StandardMaterial3D_1ag4t")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_bl1sc"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_34f57"]
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
 [node name="Chest" type="Node3D"]
@@ -24,4 +28,12 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("ConcavePolygonShape3D_bl1sc")
 
+[node name="Interactable" parent="." instance=ExtResource("2_oa08g")]
+
+[node name="CollisionShape3D" parent="Interactable" index="0"]
+shape = SubResource("ConcavePolygonShape3D_34f57")
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="focused" from="Interactable" to="." method="_on_interactable_focused"]
+
+[editable path="Interactable"]

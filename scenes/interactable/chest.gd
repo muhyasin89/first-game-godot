@@ -14,3 +14,7 @@ func _process(delta: float) -> void:
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.has_method("on_chest_interact"):
 		print("This is chest")
+
+
+func _on_interactable_focused(interactor: Interactor) -> void:
+	pass # Replace with function body.

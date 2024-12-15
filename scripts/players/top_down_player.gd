@@ -7,6 +7,7 @@ extends CharacterBody3D
 @onready var animation_tree = get_node("AnimationTree")
 @onready var playback = animation_tree.get("parameters/playback")
 @onready var knight: Node3D = $Knight
+@onready var PlayerInteractor: Area3D = $PlayerInteractor
 
 signal toggle_inventory()
 
@@ -63,6 +64,7 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		
 		IsMoving()
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -119,4 +121,4 @@ func _on_inventory_pressed() -> void:
 
 
 func _on_interactable_pressed() -> void:
-	pass # Replace with function body.
+	PlayerInteractor.input() # Replace with function body.
