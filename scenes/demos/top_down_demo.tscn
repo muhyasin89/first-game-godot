@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bbwdhkc0iu0dp" path="res://scenes/player.tscn" id="2_romxh"]
 [ext_resource type="ArrayMesh" uid="uid://bykc4wisp812p" path="res://assets/items/vendingMachine/vending.obj" id="3_givj1"]
 [ext_resource type="PackedScene" uid="uid://bb0dcinj3d5r" path="res://scenes/controller_layouts/joystick_touch_pad.tscn" id="3_glxvy"]
-[ext_resource type="PackedScene" uid="uid://c78av7tlbyhxm" path="res://scenes/interactable/chest.tscn" id="4_i6agj"]
 [ext_resource type="Texture2D" uid="uid://ded2m23ho7b2r" path="res://assets/icons/circle_medium.png" id="5_5m7w2"]
 [ext_resource type="Texture2D" uid="uid://cqft4fr8q6yku" path="res://assets/icons/home.png" id="7_sf7e5"]
 [ext_resource type="Script" path="res://scripts/menu/home_button.gd" id="8_cmidx"]
@@ -13,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/inventory/inventory_interface.gd" id="10_m1sll"]
 [ext_resource type="Script" path="res://scripts/item/pickup.gd" id="11_2gogb"]
 [ext_resource type="PackedScene" uid="uid://csielcyxlcq3l" path="res://scripts/inventory/slot.tscn" id="12_kueft"]
+[ext_resource type="PackedScene" uid="uid://bo5to3cs55ywc" path="res://assets/models/chest/chest.tscn" id="13_hxu6t"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vuemu"]
 sky_top_color = Color(0.361584, 0.562306, 0.817912, 1)
@@ -51,9 +51,6 @@ joystick_touch_pad = NodePath("../../ui/joystick_touch_pad")
 [node name="Vending" type="MeshInstance3D" parent="objects"]
 transform = Transform3D(-0.051325, 0, 0.998682, 0, 1, 0, -0.998682, 0, -0.051325, -37.4818, 0.620158, -48.2606)
 mesh = ExtResource("3_givj1")
-
-[node name="Chest" parent="objects" instance=ExtResource("4_i6agj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.5366, 0.489762, -35.2719)
 
 [node name="stage" parent="." instance=ExtResource("8_nvesx")]
 
@@ -178,6 +175,9 @@ item_id = "pickaxe"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.297474, 1.19883, -0.325665)
 shape = SubResource("CapsuleShape3D_q15y5")
+
+[node name="chest" parent="." instance=ExtResource("13_hxu6t")]
+transform = Transform3D(1.45303, 0, 0, 0, 3.57806, 0, 0, 0, 1.6364, -39.9309, 0.0750012, -34.0159)
 
 [connection signal="pressed" from="ui/right_side_buttons/action_a_button" to="objects/player" method="_on_action_a_button_pressed"]
 [connection signal="pressed" from="ui/right_side_buttons/action_b_button" to="objects/player" method="_on_action_b_button_pressed"]

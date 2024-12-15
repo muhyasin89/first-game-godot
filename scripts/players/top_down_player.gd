@@ -121,4 +121,8 @@ func _on_inventory_pressed() -> void:
 
 
 func _on_interactable_pressed() -> void:
-	PlayerInteractor.input() # Replace with function body.
+	print("what is", PlayerInteractor)
+
+
+func _on_player_interactor_body_entered(body: Node3D) -> void:
+	print("This is ", body) # Replace with function body.

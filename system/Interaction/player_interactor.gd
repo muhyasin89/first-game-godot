@@ -18,8 +18,9 @@ func _physics_process(_delta: float) -> void:
 		cached_closest = new_closest
 
 func input() -> void:
-		if is_instance_valid(cached_closest):
-			interact(cached_closest)
+	print("ini di input ya")
+	if is_instance_valid(cached_closest):
+		interact(cached_closest)
 
 func _on_area_exited(area: Interactable) -> void:
 	if cached_closest == area:

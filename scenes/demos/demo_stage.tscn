@@ -57,6 +57,7 @@ surface_material_override/2 = ExtResource("3_uimi4")
 surface_material_override/3 = SubResource("StandardMaterial3D_spvsy")
 
 [node name="Cube_002" parent="walls/world_border" index="3"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 14.9977, 0.0474291, 55.0228)
 surface_material_override/0 = ExtResource("1_nhkx4")
 surface_material_override/2 = ExtResource("3_uimi4")
 surface_material_override/3 = SubResource("StandardMaterial3D_spvsy")
