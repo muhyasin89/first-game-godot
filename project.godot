@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Pocket Godot"
 config/description="Android demo showcasing multiple controlles build for touch based devices"
-run/main_scene="res://scenes/menus/main_menu.tscn"
+run/main_scene="res://system/Interaction/interactor.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://assets/icons/godot_white.png"
 

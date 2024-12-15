@@ -8,6 +8,8 @@ extends CharacterBody3D
 @onready var playback = animation_tree.get("parameters/playback")
 @onready var knight: Node3D = $Knight
 
+@onready var playerInteracor: Area3D = $PlayerInteractor
+
 signal toggle_inventory()
 
 const SPEED = 5.0
@@ -119,4 +121,4 @@ func _on_inventory_pressed() -> void:
 
 
 func _on_interactable_pressed() -> void:
-	pass # Replace with function body.
+	playerInteracor.input()
